@@ -67,6 +67,14 @@ class Database {
         return $cancellation_status;
     }
 
+    function calculate_price($c_id, $hours) {
+        $query = "SELECT c_PPH FROM Car WHERE c_id = $c_id";
+        $res = mysqli_query($this->conn, $query);
+        $row = mysqli_fetch_assoc($res);
+        $pph = (int)implode("", $row);
+        return $pph * $hours;
+    }
+
     function __destruct() {
         mysqli_close($this->conn);
     }
