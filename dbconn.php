@@ -24,10 +24,10 @@ class Database {
         }
     }
 
-    function register($id, $password, $name, $dob) {
+    function register($u_id, $password, $name, $dob) {
         $query = "INSERT INTO User
                     VALUES
-                    ($id, '$password', '$name', '$dob', 1)";
+                    ($u_id, '$password', '$name', '$dob', 1)";
         $registration_status = mysqli_query($this->conn, $query);
         return $registration_status;
     }
@@ -41,11 +41,13 @@ class Database {
         return False;
     }
 
-    function search_cars($start_time, $return_time) {
+    function search_cars($u_id, $start_time, $return_time) {
         $query = "SELECT * FROM Car C
                   WHERE C.c_id NOT IN (
                       SELECT B.c_id FROM Booking B
-                      WHERE B.start_time < '$start_time' AND B.return_time > '$return_time')";
+                      WHERE B.start_time < '$start_time' AND B.return_time > '$return_time')
+                   AND $u_id NOT IN (
+                       SELECT B.u_id FROM Booking B)";
 
         $cars = mysqli_query($this->conn, $query);
         return $cars;
@@ -69,27 +71,4 @@ class Database {
         mysqli_close($this->conn);
     }
 }
-
-
-//$result = search_cars($conn, "2018-10-10 10:10:10", "2018-10-10 10:10:12");
-//print_all($result);
-
-//$registration_status = register($conn, "6", "key", "Buchi", "1999-01-02");
-//echo $registration_status;
-
-//$result = login($conn, "6", "key");
-//echo $result;
-
-//$booking_status = book_car($conn, "1", "1", "2018-10-10 10:10:10", "2018-10-10 10:12:10");
-//echo $booking_status;
-
-//$cancellation_status = cancel_booking($conn, "1");
-//echo $cancellation_status;
-
-//$result = mysqli_query($conn, "SELECT * FROM Booking");
-//print_all($result);
-
-$db = new Database();
-$login_status = $db->book_car("1", "1", "2018-10-10 10:10:10", "2018-10-10 10:12:10");
-echo $login_status;
 ?> 
