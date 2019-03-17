@@ -84,6 +84,14 @@ class CarRentals_Database {
         return $cars;
     }
 
+    function get_booking_history($u_id) {
+        $query = "SELECT C.c_name, B.start_time, B.return_time
+                  FROM Booking B, Car C
+                  WHERE C.c_id = B.c_id AND B.u_id = $u_id";
+        $booking_history = mysqli_query($this->conn, $query);
+        return $booking_history;
+    }
+
     function __destruct() {
         mysqli_close($this->conn);
     }
