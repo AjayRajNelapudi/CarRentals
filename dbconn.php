@@ -1,5 +1,5 @@
 <?php
-class Database {
+class CarRentals_Database {
     public $conn = NULL;
 
     function __construct() {
@@ -24,31 +24,34 @@ class Database {
         }
     }
 
-    function register($u_id, $password, $name, $dob) {
+    function register($u_id, $password, $name, $email, $phone, $license) {
         $query = "INSERT INTO User
                     VALUES
-                    ($u_id, '$password', '$name', '$dob', 1)";
+                    ($u_id, '$password', '$name', '$email', '$phone', '$license', 1)";
         $registration_status = mysqli_query($this->conn, $query);
         return $registration_status;
     }
 
     function login($user_id, $password) {
-        $query = "SELECT * FROM User WHERE u_id = $user_id AND u_password = '$password'";
+        $query = "SELECT u_id FROM User WHERE u_name = '$user_id' AND u_password = '$password'";
         $user = mysqli_query($this->conn, $query);
         if (mysqli_num_rows($user) == 1) {
-          return True;
+            $row = mysqli_fetch_assoc($user);
+            return $row["u_id"];
         }
-        return False;
+        return NULL;
     }
 
-    function search_cars($u_id, $start_time, $return_time) {
+    function search_cars($u_id, $start_time, $return_time, $location) {
         $query = "SELECT * FROM Car C
-                  WHERE C.c_id NOT IN (
-                      SELECT B.c_id FROM Booking B
-                      WHERE B.start_time < '$start_time' AND B.return_time > '$return_time')
-                   AND $u_id NOT IN (
-                       SELECT B.u_id FROM Booking B)";
-
+                  WHERE C.c_location = '$location' 
+                  AND C.c_id NOT IN (
+                                SELECT B.c_id FROM Booking B
+                                WHERE B.start_time < '$start_time' AND B.return_time > '$return_time'
+                                ) 
+                AND $u_id NOT IN (
+                                SELECT B.u_id FROM Booking B
+                            )";
         $cars = mysqli_query($this->conn, $query);
         return $cars;
     }
@@ -73,6 +76,12 @@ class Database {
         $row = mysqli_fetch_assoc($res);
         $pph = (int)implode("", $row);
         return $pph * $hours;
+    }
+
+    function get_all_cars() {
+        $query = "SELECT * FROM Car";
+        $cars = mysqli_query($this->conn, $query);
+        return $cars;
     }
 
     function __destruct() {

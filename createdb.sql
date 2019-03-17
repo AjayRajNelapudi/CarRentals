@@ -8,6 +8,7 @@ create table Car (
     c_image varchar(100),
     c_fuel varchar(10) not null,
     c_type varchar(10) not null,
+    c_location varchar(30) not null,
     c_PPH integer not null
     -- PPH stands for price per hour
 );
@@ -15,8 +16,10 @@ create table Car (
 create table User (
     u_id integer primary key,
     u_password varchar(20) not null,
-    u_name varchar(50) not null,
-    u_dob date not null,
+    u_name varchar(50) not null unique,
+    u_email varchar(30) not null,
+    u_phone varchar(12) not null,
+    u_license char(16) not null,
     u_rating integer
 );
 
