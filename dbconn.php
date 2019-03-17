@@ -43,7 +43,7 @@ class CarRentals_Database {
     }
 
     function search_cars($u_id, $start_time, $return_time, $location) {
-        $query = "SELECT * FROM Car C
+        $query = "SELECT C.c_id, C.c_name, C.c_type, C.c_fuel FROM Car C
                   WHERE C.c_location = '$location' 
                   AND C.c_id NOT IN (
                                 SELECT B.c_id FROM Booking B

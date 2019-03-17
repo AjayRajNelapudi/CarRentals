@@ -22,15 +22,49 @@ $return_time = $_POST["return-time"];
 $location = $_POST["location"];
 
 $db = new CarRentals_Database();
-$cars = $db->search_cars($u_id, $start_time, $return_time, $location);
-
-$db->print_all($cars);
 
 $cars = $db->search_cars($u_id, $start_time, $return_time, $location);
 $duration = time_diff($start_time, $return_time);
-
-while($row = mysqli_fetch_assoc($cars)) {
-	$price = $db->calculate_price($row["c_id"], $duration);
-	echo "$price<br>";
-}
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Select Cars
+	</title>
+
+	<style type="text/css">
+		table.display-cars {
+			border-radius: 15px;
+			border-width: 3px;
+			border-color: white;
+			font-family: Arial, Helvetica, sans-serif;
+			color: #FFFFFF;
+			border-spacing: 5px;
+		    border-style: solid;
+		}
+	</style>
+
+	<marquee behavior="scroll" direction="right" bgcolor=#7477AF text=#000000>CAR RENTAL</marquee>
+</head>
+<body background="royce.jpg">
+	<form method="POST" action="book_car.php">
+		<table class="display-cars" cellspacing="30" cellpadding="20">
+			<?php
+				while ($row = mysqli_fetch_assoc($cars)) {
+					$c_id = $row['c_id'];
+					echo "<tr>";
+					foreach ($row as $attribute) {
+						echo "<td>$attribute</td>";
+					}
+					$price = $db->calculate_price($c_id, $duration);
+					echo "<td>$price</td>";
+					echo '<td><input type="submit" name="$c_id" value="Book"></td>';
+					echo "</tr>";
+				}
+			?>
+		</table>
+	</form>
+</body>
+</html>
