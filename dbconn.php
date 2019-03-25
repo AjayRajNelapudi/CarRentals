@@ -64,8 +64,14 @@ class CarRentals_Database {
         return $booking_status;
     }
 
-    function cancel_booking($c_id) {
-        $query = "DELETE FROM Booking WHERE c_id = $c_id";
+    function cancel_booking($u_id) {
+        $query = "SELECT MAX(date_of_booking) FROM Booking";
+        $last_booking_res = mysqli_query($this->conn, $query);
+        $tuple = mysqli_fetch_assoc($last_booking_res);
+        $last_booking = $tuple["MAX(date_of_booking)"];
+
+        $query = "DELETE FROM Booking WHERE u_id = $u_id
+                  AND date_of_booking = '$last_booking'";
         $cancellation_status = mysqli_query($this->conn, $query);
         return $cancellation_status;
     }
