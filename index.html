@@ -91,6 +91,15 @@
   position:absolute;
   top:12px
 }
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
 </style>
 
 <marquee behavior="scroll" direction="right" bgcolor=#7477AF text=#000000  >CAR RENTAL</marquee>
@@ -109,7 +118,7 @@
     
     <div class="text">
 	<h1 font="calibri">CAR RENTALS</h1>
-<form method="POST" action="validate_login.php"  >
+<form method="POST" action="validate_login.php" >
 
 
       Username: <input type="text" name="username" value=""><br>
@@ -118,8 +127,7 @@
       <input type="submit" value="LOGIN">
 
 		<h5>NEW USER?</h5>
-		<input type="submit" value="REGISTER">
-
+    <a href="register.html" class="button">Register</a> 
 
     </form>
 </div>
