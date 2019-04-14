@@ -7,7 +7,7 @@ $password = $_POST["password"];
 $confirm_password = $_POST["confirm_password"];
 
 if (strcmp($password, $confirm_password)) {
-	header("Location: reg.html");
+	header("Location: register.html");
 }
 
 require("dbconn.php");
@@ -18,7 +18,7 @@ session_start();
 $_SESSION["u_id"] = $u_id;
 
 if ($db->register($u_id, $password, $username, $email, $phone, $license)) {
-	header("Location: login.html");
+	header("Location: index.html");
 } else {
 	header("Location: error.html");
 }
